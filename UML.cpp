@@ -46,7 +46,10 @@ public:
 	}
 };
 
+class Engine
+{
 
+};
 void main()
 {
 	setlocale(LC_ALL, "");
