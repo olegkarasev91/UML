@@ -3,6 +3,8 @@
 using namespace std;
 #define MAX_TANK_VOLUME 80
 #define MIN_TANK_VOLUME 40
+#define MIN_ENGINE_CONSUMPTION 4
+#define MAX_ENGINE_CONSUMPTION 25
 class Tank
 {
 	const unsigned int VOLUME;
@@ -48,11 +50,60 @@ public:
 
 class Engine
 {
-
+	double consumption;
+	double consumption_per_second;
+	bool is_started;
+public:
+	double get_consumption()const
+	{
+		return consumption;
+	}
+	double get_consumption_per_second()const
+	{
+		return consumption_per_second;
+	}
+	bool started()const
+	{
+		return is_started;
+	}
+	bool start()
+	{
+		is_started = true;
+	}
+	bool stop()
+	{
+		is_started = false;
+	}
+	void set_consumption(double consuption)
+	{
+		if (consuption >= MIN_ENGINE_CONSUMPTION && consuption <= MAX_ENGINE_CONSUMPTION)
+			this->consumption = consuption;
+		else
+			this->consumption = MAX_ENGINE_CONSUMPTION / 2;
+		consumption_per_second = consuption * 3e-4;
+	}
+	explicit Engine(double consumption)
+	{
+		set_consumption(consumption);
+		is_started = false;
+		cout << "Engine is ready:\t" << this << endl;
+	}
+	~Engine()
+	{
+		cout << "Engine is gone:\t" << this << endl;
+	}
+	void info()const
+	{
+		cout << "Consumption:\t" << consumption << endl;
+		cout << "Consumption per sec:\t" << consumption_per_second << endl;
+		cout << "Engine is " << (is_started ? "started" : "stopped") << endl;
+	}
 };
+//#define TANK_CHECK
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef TANK_CHECK
 	Tank tank(120);
 	tank.info();
 	int fuel;
@@ -62,5 +113,8 @@ void main()
 		tank.fill(fuel);
 		tank.info();
 	}
+#endif//TANK CHECK
+	Engine engine(9);
+	engine.info();
 }
 
